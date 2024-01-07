@@ -4,11 +4,16 @@ const apiURl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q="
 const searchBox = document.querySelector(".search input")
 const searchBtn = document.querySelector(".search button")
 const watherIcon = document.querySelector('.weather-icon')
-
-
+const load = document.getElementById("preloader")
+load.style.display = "none";
 async function checkWeather(city){
+   load.style.display = "block";
    const respons = await fetch(apiURl + city + `&appid=${apiKey}`)
+   .finally(function () {
+      load.style.display = "none";
+    });
    var data = await respons.json();
+
 
   
 
@@ -16,7 +21,8 @@ async function checkWeather(city){
    document.querySelector(".city").innerHTML = data.name;
    document.querySelector(".temp").innerHTML = Math.round(data.main.temp)+"°c";
    document.querySelector(".humidty").innerHTML = data.main.humidity+"%";
-   document.querySelector(".wind").innerHTML = data.wind.speed+" km/h";
+   document.querySelector(".wind").innerHTML = data.wind.speed+" km/h"
+   
 
 
    if(data.weather[0].main == "Cloudes")
@@ -39,6 +45,7 @@ async function checkWeather(city){
    {
       watherIcon.src="img/mist.png";
    }
+     
    
 }
 
